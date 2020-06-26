@@ -13,6 +13,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	maven("https://repo.spring.io/milestone")
 }
 
 dependencies {
@@ -30,6 +31,13 @@ dependencies {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("org.springframework.boot.experimental:spring-boot-test-autoconfigure-r2dbc")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.boot.experimental:spring-boot-bom-r2dbc:0.1.0.M3")
+	}
 }
 
 tasks.withType<Test> {
