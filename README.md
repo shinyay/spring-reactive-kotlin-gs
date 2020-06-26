@@ -3,6 +3,29 @@
 Spring Reactive with WebFlux and R2DBC using Kotlin
 
 ## Description
+### Dependencies
+This project adds the followinf dependencies to use Reactive
+
+```
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("io.r2dbc:r2dbc-h2")
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("org.springframework.boot.experimental:spring-boot-test-autoconfigure-r2dbc")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.boot.experimental:spring-boot-bom-r2dbc:0.1.0.M3")
+	}
+}
+```
 
 ## Demo
 
