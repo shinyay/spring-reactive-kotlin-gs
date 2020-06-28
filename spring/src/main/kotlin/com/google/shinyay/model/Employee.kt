@@ -1,10 +1,11 @@
 package com.google.shinyay.model
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
-@Table
-data class Person(@Id val id: Int,
-                  val name: String,
-                  val age: Int
+@Table("employee")
+data class Employee(@Id val id: Long?,
+                    @Column("first_name") val firstName: String,
+                    @Column("last_name")val age: Int
 )
