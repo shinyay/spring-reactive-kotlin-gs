@@ -2,10 +2,10 @@ package com.google.shinyay.repository
 
 import com.google.shinyay.model.Employee
 import org.springframework.data.r2dbc.repository.Query
-import org.springframework.data.repository.reactive.ReactiveCrudRepository
+import org.springframework.data.r2dbc.repository.R2dbcRepository
 import reactor.core.publisher.Mono
 
-interface EmployeeRepository : ReactiveCrudRepository<Employee, Long> {
+interface EmployeeRepository : R2dbcRepository<Employee, Long> {
 
     @Query("select e.* from Employee e where e.last_name = :lastName")
     fun findEmployeeByLastName(lastName: String): Mono<Employee>
