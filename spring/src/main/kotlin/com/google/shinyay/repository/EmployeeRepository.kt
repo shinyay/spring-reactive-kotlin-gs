@@ -3,7 +3,6 @@ package com.google.shinyay.repository
 import com.google.shinyay.model.Employee
 import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 interface EmployeeRepository : ReactiveCrudRepository<Employee, Long> {
