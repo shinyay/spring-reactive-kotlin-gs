@@ -7,9 +7,9 @@ import reactor.core.publisher.Flux
 
 interface PersonRepository : ReactiveCrudRepository<Person, Int> {
 
-    @Query("select id, name, age from person where name = :name")
+    @Query("SELECT id, name, age FROM person WHERE name = :name")
     fun findAllByName(name: String): Flux<Person>
 
-    @Query("select * from player where age = :age")
+    @Query("SELECT * FROM player WHERE age = :age")
     fun findByAge(age: Int)
 }
