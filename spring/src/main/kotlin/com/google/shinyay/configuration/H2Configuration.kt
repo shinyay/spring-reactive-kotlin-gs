@@ -2,36 +2,39 @@ package com.google.shinyay.configuration
 
 import com.google.shinyay.model.Employee
 import com.google.shinyay.repository.EmployeeRepository
+import io.r2dbc.spi.ConnectionFactory
+import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Bean
-import org.springframework.data.r2dbc.core.DatabaseClient
+import org.springframework.core.io.ClassPathResource
+import org.springframework.data.r2dbc.connectionfactory.init.CompositeDatabasePopulator
+import org.springframework.data.r2dbc.connectionfactory.init.ConnectionFactoryInitializer
+import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Flux
-import java.util.stream.Stream
+
 
 @Component
-class ApplicationConfiguration {
+class ApplicationConfiguration(val repository: EmployeeRepository) : ApplicationRunner {
 
     @Bean
-    fun runner(employeeRepository: EmployeeRepository, db: DatabaseClient) = ApplicationRunner {
-        val initDb = db.execute {
-            """ CREATE TABLE employee (
-                    id SERIAL PRIMARY KEY,
-                    first_name VARCHAR(255) NOT NULL,
-                    last_name VARCHAR(255) NOT NULL
-                );
-            """
-        }
+    fun initializer(connectionFactory: ConnectionFactory?): ConnectionFactoryInitializer? {
+        val initializer = ConnectionFactoryInitializer()
+        initializer.setConnectionFactory(connectionFactory!!)
+        val populator = CompositeDatabasePopulator()
+        populator.addPopulators(ResourceDatabasePopulator(ClassPathResource("schema.sql")))
+        populator.addPopulators(ResourceDatabasePopulator(ClassPathResource("data.sql")))
+        initializer.setDatabasePopulator(populator)
+        return initializer
+    }
 
-        val stream = Stream.of(
-                Employee(null, "Shinya", "Yanagihara")
-        )
-
-        val saveAll = employeeRepository.saveAll(Flux.fromStream(stream))
-
-        initDb // initialize the database
-                .then()
-                .thenMany(saveAll) // then save our Sample Employees
-                .subscribe() // execute
+    override fun run(args: ApplicationArguments?) {
+        repository
+                .saveAll(listOf(
+                        Employee("Shinji", "Ikari"),
+                        Employee("Asuka", "Soryu")
+                )).thenMany(
+                        repository.findAll()
+                )
+                .subscribe()
     }
 }
