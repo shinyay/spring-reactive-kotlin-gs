@@ -1,18 +1,37 @@
 package com.google.shinyay.configuration
 
-import io.r2dbc.h2.H2ConnectionConfiguration
-import io.r2dbc.h2.H2ConnectionFactory
+import com.google.shinyay.model.Employee
+import com.google.shinyay.repository.EmployeeRepository
+import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration
+import org.springframework.data.r2dbc.core.DatabaseClient
+import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
+import java.util.stream.Stream
 
-@Configuration
-class H2Configuration : AbstractR2dbcConfiguration() {
+@Component
+class ApplicationConfiguration {
 
     @Bean
-    override fun connectionFactory() = H2ConnectionFactory(
-            H2ConnectionConfiguration.builder()
-                    .url("mem:testdb;DB_CLOSE_DELAY=-1;TRACE_LEVEL_FILE=4")
-                    .username("sa")
-                    .build())
+    fun runner(employeeRepository: EmployeeRepository, db: DatabaseClient) = ApplicationRunner {
+        val initDb = db.execute {
+            """ CREATE TABLE employee (
+                    id SERIAL PRIMARY KEY,
+                    first_name VARCHAR(255) NOT NULL,
+                    last_name VARCHAR(255) NOT NULL
+                );
+            """
+        }
+
+        val stream = Stream.of(
+                Employee(null, "Shinya", "Yanagihara")
+        )
+
+        val saveAll = employeeRepository.saveAll(Flux.fromStream(stream))
+
+        initDb // initialize the database
+                .then()
+                .thenMany(saveAll) // then save our Sample Employees
+                .subscribe() // execute
+    }
 }
