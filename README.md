@@ -19,12 +19,6 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.boot.experimental:spring-boot-test-autoconfigure-r2dbc")
 }
-
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.boot.experimental:spring-boot-bom-r2dbc:0.1.0.M3")
-	}
-}
 ```
 
 ## Demo
