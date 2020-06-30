@@ -18,13 +18,16 @@ class ApplicationConfiguration(val repository: EmployeeRepository) : Application
 
     @Bean
     fun initializer(connectionFactory: ConnectionFactory?): ConnectionFactoryInitializer? {
-        val initializer = ConnectionFactoryInitializer()
-        initializer.setConnectionFactory(connectionFactory!!)
-        val populator = CompositeDatabasePopulator()
-        populator.addPopulators(ResourceDatabasePopulator(ClassPathResource("schema.sql")))
-        populator.addPopulators(ResourceDatabasePopulator(ClassPathResource("data.sql")))
-        initializer.setDatabasePopulator(populator)
-        return initializer
+
+        val populator = CompositeDatabasePopulator().apply {
+            addPopulators(ResourceDatabasePopulator(ClassPathResource("schema.sql")))
+            addPopulators(ResourceDatabasePopulator(ClassPathResource("data.sql")))
+        }
+
+        return ConnectionFactoryInitializer().apply {
+            setConnectionFactory(connectionFactory!!)
+            setDatabasePopulator(populator)
+        }
     }
 
     override fun run(args: ApplicationArguments?) {
