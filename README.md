@@ -54,6 +54,14 @@ spring:
     password:
 ```
 
+### 3. R2DBC Repository Interface
+
+Create `R2dbcRepository` implemented interface
+
+```kotlin
+interface EmployeeRepository : R2dbcRepository<Employee, Long>
+```
+
 ## Features
 
 - feature:1
