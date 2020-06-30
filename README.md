@@ -40,6 +40,20 @@ fun initializer(connectionFactory: ConnectionFactory?): ConnectionFactoryInitial
 }
 ```
 
+### 2. R2DBC Configuration
+
+- *application.yml*
+
+```yaml
+spring:
+  application:
+    name: reactive-kotlin
+  r2dbc:
+    url: r2dbc:h2:mem:///test?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    name: sa
+    password:
+```
+
 ## Features
 
 - feature:1
