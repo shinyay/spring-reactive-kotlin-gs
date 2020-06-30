@@ -3,7 +3,7 @@
 Spring Reactive with WebFlux and R2DBC using Kotlin
 
 ## Description
-### Dependencies
+### 0. Dependencies
 This project adds the followinf dependencies to use Reactive
 
 ```
@@ -21,7 +21,6 @@ dependencies {
 }
 ```
 
-## Demo
 ### 1. Database Configuration for Connection and Schema
 
 ```kotlin
@@ -60,6 +59,16 @@ Create `R2dbcRepository` implemented interface
 
 ```kotlin
 interface EmployeeRepository : R2dbcRepository<Employee, Long>
+```
+
+## Demo
+
+```
+$ ./gradlew clean bootRun
+```
+
+```
+$ curl http://localhost:8080/employees
 ```
 
 ## Features
