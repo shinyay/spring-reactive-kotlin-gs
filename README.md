@@ -22,6 +22,23 @@ dependencies {
 ```
 
 ## Demo
+### 1. Database Configuration for Connection and Schema
+
+```kotlin
+@Bean
+fun initializer(connectionFactory: ConnectionFactory?): ConnectionFactoryInitializer? {
+
+	val populator = CompositeDatabasePopulator().apply {
+		addPopulators(ResourceDatabasePopulator(ClassPathResource("schema.sql")))
+		addPopulators(ResourceDatabasePopulator(ClassPathResource("data.sql")))
+	}
+
+	return ConnectionFactoryInitializer().apply {
+		setConnectionFactory(connectionFactory!!)
+		setDatabasePopulator(populator)
+	}
+}
+```
 
 ## Features
 
