@@ -69,6 +69,8 @@ $ ./gradlew clean bootRun
 
 ```
 $ curl http://localhost:8080/employees
+$ curl http://localhost:8080/employees/1
+$ curl http://localhost:8080/employees/lastname/Ayanami
 ```
 
 ## Features
