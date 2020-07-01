@@ -12,8 +12,11 @@ class EmployeeController(val repository: EmployeeRepository) {
     @GetMapping
     fun getAll() = repository.findAll()
 
-    @GetMapping("/{lastName}")
+    @GetMapping("/lastname/{lastName}")
     fun getByLastName(@PathVariable lastName: String) = repository.findEmployeeByLastName(lastName)
+
+    @GetMapping("/{id}")
+    fun getEmployeeById(@PathVariable id: Long) = repository.findEmployeeById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
